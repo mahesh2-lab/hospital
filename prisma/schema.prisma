@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id              Int              @id @default(autoincrement())
+  name            String
+  gender          String
+  dob             DateTime
+  contact         String
+  allergies       String?
+  history         String?
+  appointments    Appointment[]
+  opdRecords      OPDRecord[]
+  ipdAdmissions   IPDAdmission[]
+  issuedMedicines IssuedMedicine[]
+  billings        Billing[]
+  LabTest         LabTest[]
+}
+
+model Doctor {
+  id             Int           @id @default(autoincrement())
+  name           String
+  department     String
+  specialization String?
+  appointments   Appointment[]
+  opdRecords     OPDRecord[]
+  labTests       LabTest[]
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId Int
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId  Int
+  date      DateTime
+  status    String
+}
+
+model OPDRecord {
+  id           Int      @id @default(autoincrement())
+  patient      Patient  @relation(fields: [patientId], references: [id])
+  patientId    Int
+  doctor       Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId     Int
+  notes        String
+  prescription String
+  date         DateTime
+}
+
+model IPDAdmission {
+  id            Int       @id @default(autoincrement())
+  patient       Patient   @relation(fields: [patientId], references: [id])
+  patientId     Int
+  room          Room      @relation(fields: [roomId], references: [id])
+  roomId        Int
+  admitDate     DateTime
+  dischargeDate DateTime?
+}
+
+model Room {
+  id            Int            @id @default(autoincrement())
+  roomType      String
+  isOccupied    Boolean        @default(false)
+  ipdAdmissions IPDAdmission[]
+}
+
+model LabTest {
+  id        Int     @id @default(autoincrement())
+  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId Int
+  doctor    Doctor  @relation(fields: [doctorId], references: [id])
+  doctorId  Int
+  testType  String
+  result    String?
+  status    String
+}
+
+model Medicine {
+  id              Int              @id @default(autoincrement())
+  name            String
+  batch           String
+  expiry          DateTime
+  quantity        Int
+  issuedMedicines IssuedMedicine[]
+}
+
+model IssuedMedicine {
+  id         Int      @id @default(autoincrement())
+  patient    Patient  @relation(fields: [patientId], references: [id])
+  patientId  Int
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  medicineId Int
+  quantity   Int
+  date       DateTime
+}
+
+model Inventory {
+  id         Int       @id @default(autoincrement())
+  name       String
+  department String
+  quantity   Int
+  expiry     DateTime?
+}
+
+model Billing {
+  id        Int      @id @default(autoincrement())
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId Int
+  amount    Float
+  status    String
+  billDate  DateTime
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  username String @unique
+  password String
+  role     String
+}

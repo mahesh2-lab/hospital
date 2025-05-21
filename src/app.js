@@ -1,0 +1,44 @@
+import express, { json, urlencoded, } from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import morgan from 'morgan';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+
+
+import authRoutes from './routes/auth.route.js';
+
+
+const app = express();
+
+
+app.use(helmet());
+
+dotenv.config();
+
+app.use(cors({
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
+
+app.use(morgan('combined'));
+app.use(json({ limit: '10mb' }));
+app.use(urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
+app.use(compression());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to the API',
+  });
+});
+
+app.use('/api/v1/auth', authRoutes);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});

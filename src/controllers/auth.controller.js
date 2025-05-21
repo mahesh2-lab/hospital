@@ -1,0 +1,102 @@
+import { PrismaClient } from "@prisma/client";
+import genrateTokenAndSetCookie from "../utils/genrateToken.js";
+import { comparePassword, hashPassword } from "../utils/hashpassword.js";
+
+const prisma = new PrismaClient();
+
+export const signup = async (req, res) => {
+  try {
+    const { name, username, password, role } = req.body;
+
+    if (!name || !username || !password || !role) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        username,
+        password: hashedPassword,
+        role,
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Error creating user",
+      });
+    }
+
+    await genrateTokenAndSetCookie(res, user.id);
+
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: { ...user, password: undefined },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error creating user",
+      error: error.message,
+    });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found",
+      });
+    }
+
+    const isMatch = await comparePassword(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid credentials",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error logging in user",
+      error: error.message,
+    });
+  }
+};
