@@ -27,8 +27,8 @@ jobs:
 
       - name: Commit and Push README
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "mahesh2-lab"
+          git config user.email "maheshchopade133@gmail.com"
           git add README.md
           git commit -m "Auto-update README using AI" || echo "No changes"
           git push
