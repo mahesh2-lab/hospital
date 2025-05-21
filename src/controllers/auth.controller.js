@@ -74,6 +74,8 @@ export const login = async (req, res) => {
       },
     });
 
+    
+
     if (!user) {
       return res.status(400).json({
         message: "User not found",
@@ -91,11 +93,27 @@ export const login = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "User logged in successfully",
-      user,
+      user: { ...user, password: undefined },
     });
   } catch (error) {
     res.status(500).json({
       message: "Error logging in user",
+      error: error.message,
+    });
+  }
+};
+
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("secret");
+    res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error logging out user",
       error: error.message,
     });
   }
