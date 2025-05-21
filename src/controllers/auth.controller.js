@@ -43,7 +43,7 @@ export const signup = async (req, res) => {
       });
     }
 
-    await genrateTokenAndSetCookie(res, user.id);
+    await genrateTokenAndSetCookie(res, user);
 
     res.status(201).json({
       success: true,
@@ -89,6 +89,8 @@ export const login = async (req, res) => {
         message: "Invalid credentials",
       });
     }
+
+    await genrateTokenAndSetCookie(res, user);
 
     res.status(200).json({
       success: true,

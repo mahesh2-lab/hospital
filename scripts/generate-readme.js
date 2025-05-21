@@ -1,19 +1,24 @@
-const fs = require('fs');
-const axios = require('axios');
-const { execSync } = require('child_process');
+import axios from "axios";
+import fs from "fs";
+import { execSync } from "child_process";
 
 const HF_API_TOKEN = process.env.HF_API_TOKEN;
-const MODEL = 'bigscience/bloomz-560m'; // Free & light model
+const MODEL = "bigscience/bloomz-560m"; // Free & light model
 
 // Get last commit and changed files
-const commitMessage = execSync('git log -1 --pretty=%B').toString().trim();
-const filesChanged = execSync('git diff-tree --no-commit-id --name-only -r HEAD').toString().trim().split('\n');
+const commitMessage = execSync("git log -1 --pretty=%B").toString().trim();
+const filesChanged = execSync(
+  "git diff-tree --no-commit-id --name-only -r HEAD"
+)
+  .toString()
+  .trim()
+  .split("\n");
 
 // Collect code
-let codeSummary = '';
+let codeSummary = "";
 for (const file of filesChanged) {
-  if (file.endsWith('.js') || file.endsWith('.py') || file.endsWith('.ts')) {
-    const code = fs.readFileSync(file, 'utf-8');
+  if (file.endsWith(".js") || file.endsWith(".py") || file.endsWith(".ts")) {
+    const code = fs.readFileSync(file, "utf-8");
     codeSummary += `\nFile: ${file}\nCode:\n${code.substring(0, 700)}\n`; // Truncated for token limits
   }
 }
@@ -38,18 +43,19 @@ async function generateReadme() {
       {
         headers: {
           Authorization: `Bearer ${HF_API_TOKEN}`,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         timeout: 30000,
       }
     );
 
-    const result = response.data[0]?.generated_text || 'README generation failed.';
+    const result =
+      response.data[0]?.generated_text || "README generation failed.";
 
-    fs.writeFileSync('README.md', result);
-    console.log('README.md generated successfully!');
+    fs.writeFileSync("README.md", result);
+    console.log("README.md generated successfully!");
   } catch (error) {
-    console.error('Error generating README:', error.message);
+    console.error("Error generating README:", error.message);
   }
 }
 
