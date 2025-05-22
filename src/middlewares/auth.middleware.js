@@ -11,7 +11,7 @@ export const authMiddleware = (req, res, next) => {
 
     if (!token) {
       return res.status(401).json({
-        message: "You are not authorized to access  resource",
+        message: "You are not authorized to access resource",
       });
     }
 

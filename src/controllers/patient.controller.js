@@ -29,7 +29,7 @@ export const addPatient = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      message: "Error adding patient",
+      message: "Error retrieving patients",
       error: error.message,
     });
   }
