@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 
 
 import authRoutes from './routes/auth.route.js';
+import patientRoutes from './routes/patient.routes.js';
 
 
 const app = express();
@@ -20,7 +21,6 @@ dotenv.config();
 app.use(cors({
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
 app.use(morgan('combined'));
@@ -38,6 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/patients', patientRoutes);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
