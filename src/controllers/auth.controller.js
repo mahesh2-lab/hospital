@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 
 export const signup = async (req, res) => {
   try {
-    const { name, username, password, role } = req.body;
+    const { name, username, password } = req.body;
 
-    if (!name || !username || !password || !role) {
+    if (!name || !username || !password) {
       return res.status(400).json({
         message: "All fields are required",
       });
@@ -33,7 +33,7 @@ export const signup = async (req, res) => {
         name,
         username,
         password: hashedPassword,
-        role,
+        role : "admin",
       },
     });
 

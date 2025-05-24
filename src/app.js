@@ -9,6 +9,8 @@ import dotenv from 'dotenv';
 
 import authRoutes from './routes/auth.route.js';
 import patientRoutes from './routes/patient.routes.js';
+import doctorRouters from './routes/doctor.routes.js'
+import appointmentRoutes from './routes/appointment.routes.js';
 
 
 const app = express();
@@ -20,7 +22,7 @@ dotenv.config();
 
 app.use(cors({
     origin: '*',
-    credentials: true,
+    credentials: true,                
 }));
 
 app.use(morgan('combined'));
@@ -39,6 +41,13 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/patients', patientRoutes);
+app.use('/api/v1/doctor', doctorRouters);
+app.use('/api/v1/appointments', appointmentRoutes);
+
+
+
+
+
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

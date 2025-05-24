@@ -79,7 +79,6 @@ export const getPatientById = async (req, res) => {
   }
 };
 
-
 export const updatePatient = async (req, res) => {
   try {
     const { id } = req.params;
@@ -118,7 +117,6 @@ export const updatePatient = async (req, res) => {
     });
   }
 }
-
 
 export const deletePatient = async (req, res) => {
   try {

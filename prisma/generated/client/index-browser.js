@@ -124,14 +124,16 @@ exports.Prisma.PatientScalarFieldEnum = {
   dob: 'dob',
   contact: 'contact',
   allergies: 'allergies',
-  history: 'history'
+  history: 'history',
+  doctorId: 'doctorId'
 };
 
 exports.Prisma.DoctorScalarFieldEnum = {
   id: 'id',
   name: 'name',
   department: 'department',
-  specialization: 'specialization'
+  specialization: 'specialization',
+  contact: 'contact'
 };
 
 exports.Prisma.AppointmentScalarFieldEnum = {
