@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id                     Int       @id @default(autoincrement())
+  mhrNo                  String    @default(dbgenerated("(substr(hex(randomblob(3)),1,6))"))
+  uidNo                  String
+  ipdNo                  String
+  wardOrIcu              String
+  bedRoomNo              String
+  patientName            String?
+  fatherName             String?
+  age                    Int?
+  sex                    String
+  weight                 String?
+  address                String?
+  occupation             String?
+  regNo                  String?
+  dateOfAdmission        DateTime?
+  dateOfDischarge        DateTime?
+  dateOfOperation        String?
+  surgeryPerformByDoctor String?
+  anesthetistDoctor      String?
+  performByDoctor        String?
+  doctorIncharge         String?
+  broughtBy              String?
+  statusOfDischarge      String?
+  dischargeSummary       String?
+  icdCode                String?
+  provisionalDiagnosis   String?
+  finalDiagnosis         String?
+}
+
+model Doctor {
+  id             Int    @id @default(autoincrement())
+  name           String
+  department     String
+  specialization String
+  contact        String
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  patientId Int
+  doctorId  Int
+  date      DateTime
+  status    String
+}
+
+model OPDRecord {
+  id           Int      @id @default(autoincrement())
+  patientId    Int
+  doctorId     Int
+  notes        String
+  prescription String
+  date         DateTime
+}
+
+model IpdChart {
+  id                     Int      @id @default(autoincrement())
+  date                   DateTime
+  chiefComplaints        String
+  hopi                   String
+  previousInvestigations String?
+  systemicExamination    String?
+  localExamination       String?
+  provisionalDiagnosis   String?
+  finalDiagnosis         String?
+  patientId              Int
+}
+
+model Continuation {
+  id           Int      @id @default(autoincrement())
+  date         DateTime
+  ClinicalNote String
+  treatment    String
+  patientId    Int
+}
+
+model Nursing {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  time        String
+  pulse       Int
+  bp          String
+  rr          Int
+  spo2        Int
+  temperature Float
+  intake      String?
+  output      String?
+  patientId   Int
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  username String @unique
+  password String
+  role     String
+}
