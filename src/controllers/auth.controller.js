@@ -74,9 +74,12 @@ export const login = async (req, res) => {
       },
     });
 
+<<<<<<< HEAD
     console.log("user", user);
     
 
+=======
+>>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
     if (!user) {
       return res.status(400).json({
         message: "User not found",
