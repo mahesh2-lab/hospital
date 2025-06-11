@@ -12,7 +12,7 @@ import patientRoutes from './routes/patient.routes.js';
 import continuationRoutes from './routes/continuation.routes.js';
 import ipdRoutes from './routes/ipd.routes.js';
 import nursingRoutes from './routes/nursing.routes.js';
-import drugRoutes from './routes/drugchart.routes.js'; // Assuming drug chart routes are in drugchart.routes.js
+import drugRoutes from './routes/drugchart.routes.js'; 
 import { fileURLToPath } from 'url';
 
 const app = express();
@@ -45,17 +45,14 @@ app.use('/api/v1/patients', patientRoutes);
 app.use('/api/v1/continuation', continuationRoutes);
 app.use('/api/v1/ipd', ipdRoutes)
 app.use('/api/v1/nursing', nursingRoutes);
-app.use('/api/v1/drug-charts', drugRoutes); // Assuming drug chart routes are in continuation.routes.js
+app.use('/api/v1/drug-charts', drugRoutes); 
 
-// serve React’s build
-// __dirname is not defined in ES6 modules, so use import.meta.url to get directory
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static files from React's build directory
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Fallback to client for any route not handled above
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
