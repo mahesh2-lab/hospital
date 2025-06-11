@@ -7,7 +7,7 @@ export async function createContinuation(req, res) {
     try {
         const { date, ClinicalNote, treatment, patientId } = req.body;
         const continuation = await prisma.continuation.create({
-            data: { date: new Date(date), ClinicalNote, treatment, patientId },
+            data: { date: new Date(date), ClinicalNote, treatment, patientId: Number(patientId) },
         });
         res.status(201).json(continuation);
     } catch (error) {

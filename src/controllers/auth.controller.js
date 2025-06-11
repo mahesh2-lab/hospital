@@ -6,7 +6,10 @@ const prisma = new PrismaClient();
 
 export const signup = async (req, res) => {
   try {
+    console.log(req.body);
     const { name, username, password } = req.body;
+
+    
 
     if (!name || !username || !password) {
       return res.status(400).json({
@@ -60,6 +63,7 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -74,12 +78,9 @@ export const login = async (req, res) => {
       },
     });
 
-<<<<<<< HEAD
     console.log("user", user);
     
 
-=======
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
     if (!user) {
       return res.status(400).json({
         message: "User not found",

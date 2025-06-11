@@ -8,15 +8,15 @@ datasource db {
 }
 
 model Patient {
-<<<<<<< HEAD
   id                     Int       @id @default(autoincrement())
-  mhrNo                  String    @default(dbgenerated("(substr(hex(randomblob(3)),1,6))"))
+  mhrNo                  String
   uidNo                  String
   ipdNo                  String
   wardOrIcu              String
   bedRoomNo              String
   patientName            String?
   fatherName             String?
+  aadharNo               String?
   age                    Int?
   sex                    String
   weight                 String?
@@ -28,6 +28,10 @@ model Patient {
   dateOfOperation        String?
   surgeryPerformByDoctor String?
   anesthetistDoctor      String?
+  referringDoctor        String?
+  mlcNoPoliceStation     String?
+  consultantName         String?
+  emergencyContact       String?
   performByDoctor        String?
   doctorIncharge         String?
   broughtBy              String?
@@ -40,51 +44,15 @@ model Patient {
 
 model Doctor {
   id             Int    @id @default(autoincrement())
-=======
-  id              Int              @id @default(autoincrement())
-  name            String
-  gender          String
-  dob             DateTime
-  contact         String
-  allergies       String?
-  history         String?
-  appointments    Appointment[]
-  opdRecords      OPDRecord[]
-  ipdAdmissions   IPDAdmission[]
-  issuedMedicines IssuedMedicine[]
-  billings        Billing[]
-  LabTest         LabTest[]
-  Doctor          Doctor?          @relation(fields: [doctorId], references: [id])
-  doctorId        Int?
-}
-
-model Doctor {
-  id             Int           @id @default(autoincrement())
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
   name           String
   department     String
   specialization String
   contact        String
-<<<<<<< HEAD
 }
 
 model Appointment {
   id        Int      @id @default(autoincrement())
   patientId Int
-=======
-  patients       Patient[]
-  appointments   Appointment[]
-  opdRecords     OPDRecord[]
-  labTests       LabTest[]
-}
-
-
-model Appointment {
-  id        Int      @id @default(autoincrement())
-  patient   Patient  @relation(fields: [patientId], references: [id])
-  patientId Int
-  doctor    Doctor   @relation(fields: [doctorId], references: [id])
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
   doctorId  Int
   date      DateTime
   status    String
@@ -92,31 +60,24 @@ model Appointment {
 
 model OPDRecord {
   id           Int      @id @default(autoincrement())
-<<<<<<< HEAD
   patientId    Int
-=======
-  patient      Patient  @relation(fields: [patientId], references: [id])
-  patientId    Int
-  doctor       Doctor   @relation(fields: [doctorId], references: [id])
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
   doctorId     Int
   notes        String
   prescription String
   date         DateTime
 }
 
-<<<<<<< HEAD
 model IpdChart {
   id                     Int      @id @default(autoincrement())
   date                   DateTime
   chiefComplaints        String
   hopi                   String
-  previousInvestigations String?
-  systemicExamination    String?
-  localExamination       String?
-  provisionalDiagnosis   String?
-  finalDiagnosis         String?
   patientId              Int
+  finalDiagnosis         String?
+  localExamination       String?
+  previousInvestigations String?
+  provisionalDiagnosis   String?
+  systemicExamination    String?
 }
 
 model Continuation {
@@ -125,6 +86,49 @@ model Continuation {
   ClinicalNote String
   treatment    String
   patientId    Int
+}
+
+model MedicationTracker {
+  id          String   @id @default(cuid())
+  patientId   Int // Optional: if you want user-specific trackers
+  name        String?  
+  columnDates Json // Store array of 8 dates as JSON
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  medications Medication[]
+
+  @@map("medication_trackers")
+}
+
+model Medication {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Foreign key to MedicationTracker
+  trackerId String
+  tracker   MedicationTracker @relation(fields: [trackerId], references: [id], onDelete: Cascade)
+
+  schedules Schedule[]
+
+  @@map("medications")
+}
+
+model Schedule {
+  id        String  @id @default(cuid())
+  column    Int // Column index (0-7 for 8 columns)
+  morning   Boolean @default(false)
+  afternoon Boolean @default(false)
+  evening   Boolean @default(false)
+
+  // Foreign key to Medication
+  medicationId String
+  medication   Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  @@unique([medicationId, column]) // Ensure one schedule per medication per column
+  @@map("schedules")
 }
 
 model Nursing {
@@ -139,70 +143,6 @@ model Nursing {
   intake      String?
   output      String?
   patientId   Int
-=======
-model IPDAdmission {
-  id            Int       @id @default(autoincrement())
-  patient       Patient   @relation(fields: [patientId], references: [id])
-  patientId     Int
-  room          Room      @relation(fields: [roomId], references: [id])
-  roomId        Int
-  admitDate     DateTime
-  dischargeDate DateTime?
-}
-
-model Room {
-  id            Int            @id @default(autoincrement())
-  roomType      String
-  isOccupied    Boolean        @default(false)
-  ipdAdmissions IPDAdmission[]
-}
-
-model LabTest {
-  id        Int     @id @default(autoincrement())
-  patient   Patient @relation(fields: [patientId], references: [id])
-  patientId Int
-  doctor    Doctor  @relation(fields: [doctorId], references: [id])
-  doctorId  Int
-  testType  String
-  result    String?
-  status    String
-}
-
-model Medicine {
-  id              Int              @id @default(autoincrement())
-  name            String
-  batch           String
-  expiry          DateTime
-  quantity        Int
-  issuedMedicines IssuedMedicine[]
-}
-
-model IssuedMedicine {
-  id         Int      @id @default(autoincrement())
-  patient    Patient  @relation(fields: [patientId], references: [id])
-  patientId  Int
-  medicine   Medicine @relation(fields: [medicineId], references: [id])
-  medicineId Int
-  quantity   Int
-  date       DateTime
-}
-
-model Inventory {
-  id         Int       @id @default(autoincrement())
-  name       String
-  department String
-  quantity   Int
-  expiry     DateTime?
-}
-
-model Billing {
-  id        Int      @id @default(autoincrement())
-  patient   Patient  @relation(fields: [patientId], references: [id])
-  patientId Int
-  amount    Float
-  status    String
-  billDate  DateTime
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
 }
 
 model User {

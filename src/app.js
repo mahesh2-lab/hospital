@@ -5,26 +5,18 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-
+import path from 'path';
 
 import authRoutes from './routes/auth.route.js';
 import patientRoutes from './routes/patient.routes.js';
-<<<<<<< HEAD
 import continuationRoutes from './routes/continuation.routes.js';
 import ipdRoutes from './routes/ipd.routes.js';
 import nursingRoutes from './routes/nursing.routes.js';
-=======
-import doctorRouters from './routes/doctor.routes.js'
-import appointmentRoutes from './routes/appointment.routes.js';
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
-
+import drugRoutes from './routes/drugchart.routes.js'; // Assuming drug chart routes are in drugchart.routes.js
+import { fileURLToPath } from 'url';
 
 const app = express();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
 app.use(helmet());
 
 dotenv.config();
@@ -42,27 +34,31 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the API',
-  });
-});
+// app.get('/', (req, res) => {
+//   res.json({
+//     message: 'Welcome to the API',
+//   });
+// });
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/patients', patientRoutes);
-<<<<<<< HEAD
 app.use('/api/v1/continuation', continuationRoutes);
 app.use('/api/v1/ipd', ipdRoutes)
 app.use('/api/v1/nursing', nursingRoutes);
-=======
-app.use('/api/v1/doctor', doctorRouters);
-app.use('/api/v1/appointments', appointmentRoutes);
+app.use('/api/v1/drug-charts', drugRoutes); // Assuming drug chart routes are in continuation.routes.js
 
+// serve React’s build
+// __dirname is not defined in ES6 modules, so use import.meta.url to get directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+// Serve static files from React's build directory
+app.use(express.static(path.join(__dirname, '../dist')));
 
-
-
->>>>>>> c00a5f06db257c64e0c99d1f392f8cf2bb00b1fc
+// Fallback to client for any route not handled above
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+});
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

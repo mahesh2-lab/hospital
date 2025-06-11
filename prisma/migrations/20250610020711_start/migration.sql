@@ -1,25 +1,30 @@
 -- CreateTable
 CREATE TABLE "Patient" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "mhrNo" TEXT NOT NULL DEFAULT (substr(hex(randomblob(3)),1,6)),
+    "mhrNo" TEXT NOT NULL DEFAULT 'substr(hex(randomblob(3)),1,6)',
     "uidNo" TEXT NOT NULL,
     "ipdNo" TEXT NOT NULL,
     "wardOrIcu" TEXT NOT NULL,
     "bedRoomNo" TEXT NOT NULL,
     "patientName" TEXT,
-    "aadharNo" TEXT NOT NULL,
-    "occupation" TEXT,
-    "mlcNoPoliceStation" TEXT,
-    "address" TEXT,
-    "consultantName" TEXT,
-    "referringDoctor" TEXT,
-    "emergencyContact" TEXT,
-    "age" INTEGER NOT NULL,
+    "fatherName" TEXT,
+    "age" INTEGER,
     "sex" TEXT NOT NULL,
-    "dateTimeAdmission" DATETIME,
-    "dateTimeDischarge" DATETIME,
-    "statusOfDischarge" TEXT NOT NULL,
-    "icdCode" TEXT NOT NULL,
+    "weight" TEXT,
+    "address" TEXT,
+    "occupation" TEXT,
+    "regNo" TEXT,
+    "dateOfAdmission" DATETIME,
+    "dateOfDischarge" DATETIME,
+    "dateOfOperation" TEXT,
+    "surgeryPerformByDoctor" TEXT,
+    "anesthetistDoctor" TEXT,
+    "performByDoctor" TEXT,
+    "doctorIncharge" TEXT,
+    "broughtBy" TEXT,
+    "statusOfDischarge" TEXT,
+    "dischargeSummary" TEXT,
+    "icdCode" TEXT,
     "provisionalDiagnosis" TEXT,
     "finalDiagnosis" TEXT
 );
@@ -58,7 +63,12 @@ CREATE TABLE "IpdChart" (
     "date" DATETIME NOT NULL,
     "chiefComplaints" TEXT NOT NULL,
     "hopi" TEXT NOT NULL,
-    "patientId" INTEGER NOT NULL
+    "patientId" INTEGER NOT NULL,
+    "finalDiagnosis" TEXT,
+    "localExamination" TEXT,
+    "previousInvestigations" TEXT,
+    "provisionalDiagnosis" TEXT,
+    "systemicExamination" TEXT
 );
 
 -- CreateTable
