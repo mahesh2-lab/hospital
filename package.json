@@ -6,10 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "start": "node src/app.js",
-    "build": ""
+    "start": "node src/app.js"
   },
-  
   "keywords": [],
   "author": "",
   "license": "ISC",

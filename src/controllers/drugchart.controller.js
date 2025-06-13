@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const validateColumnDates = (columnDates) => {
-  return Array.isArray(columnDates) && columnDates.length === 8;
+  return Array.isArray(columnDates) && columnDates.length === 7;
 };
 
 const validateMedications = (medications) => {
@@ -10,7 +10,7 @@ const validateMedications = (medications) => {
     med.medicationName && 
     typeof med.medicationName === 'string' &&
     Array.isArray(med.schedules) &&
-    med.schedules.length === 8
+    med.schedules.length === 7
   );
 };
 
@@ -18,7 +18,7 @@ export const getMedicationTracker = async (req, res) => {
   try {
     const { trackerId } = req.params;
     const { patientId } = req.query;
-    const patientIdNum = patientId ? Number(patientId) : undefined;
+    const patientIdNum = patientId ? Number(patientId) : undefined; 
     
     // Input validation
     if (!trackerId && !patientIdNum) {
@@ -54,7 +54,7 @@ export const getMedicationTracker = async (req, res) => {
       return res.status(404).json({
         error: 'Medication tracker not found',
         data: {
-          columnDates: Array(8).fill(''),
+          columnDates: Array(7).fill(''),
           medications: []
         }
       });
@@ -63,7 +63,7 @@ export const getMedicationTracker = async (req, res) => {
     const formattedMedications = tracker.medications.map(med => ({
       id: med.id,
       medicationName: med.name,
-      schedules: Array.from({ length: 8 }, (_, index) => {
+      schedules: Array.from({ length: 7 }, (_, index) => {
         const schedule = med.schedules.find(s => s.column === index);
         return schedule ? {
           morning: Boolean(schedule.morning),
@@ -107,7 +107,7 @@ export const saveMedicationTracker = async (req, res) => {
     if (!validateColumnDates(columnDates)) {
       return res.status(400).json({ 
         success: false,
-        error: 'Column dates must be an array of 8 dates' 
+        error: 'Column dates must be an array of 7 dates' 
       });
     }
     
@@ -166,7 +166,7 @@ export const saveMedicationTracker = async (req, res) => {
           });
           
           // Create schedules for each column
-          const schedulePromises = Array.from({ length: 8 }, (_, i) => {
+          const schedulePromises = Array.from({ length: 7 }, (_, i) => {
             const schedule = med.schedules[i] || { 
               morning: false, 
               afternoon: false, 
@@ -338,10 +338,10 @@ export const updateMedication = async (req, res) => {
       });
     }
     
-    if (!Array.isArray(schedules) || schedules.length !== 8) {
+    if (!Array.isArray(schedules) || schedules.length !== 7) {
       return res.status(400).json({ 
         success: false,
-        error: 'Schedules must be an array of 8 items' 
+        error: 'Schedules must be an array of 7 items' 
       });
     }
     

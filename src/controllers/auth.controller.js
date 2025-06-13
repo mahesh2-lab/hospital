@@ -8,8 +8,6 @@ export const signup = async (req, res) => {
   try {
     const { name, username, password } = req.body;
 
-    
-
     if (!name || !username || !password) {
       return res.status(400).json({
         message: "All fields are required",
@@ -35,7 +33,7 @@ export const signup = async (req, res) => {
         name,
         username,
         password: hashedPassword,
-        role : "admin",
+        role: "admin",
       },
     });
 
@@ -62,7 +60,6 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -78,7 +75,6 @@ export const login = async (req, res) => {
     });
 
     console.log("user", user);
-    
 
     if (!user) {
       return res.status(400).json({
@@ -111,7 +107,6 @@ export const login = async (req, res) => {
 
 export const currentUser = async (req, res) => {
   try {
-
     if (!req.user) {
       return res.status(401).json({
         message: "You are not authorized to access this resource",
