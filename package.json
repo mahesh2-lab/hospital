@@ -1,11 +1,15 @@
 {
   "name": "hospital",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/app.js",
+  "bin": "src/app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "build": ""
   },
+  
   "keywords": [],
   "author": "",
   "license": "ISC",
