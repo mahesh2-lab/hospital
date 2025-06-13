@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 export const signup = async (req, res) => {
   try {
-    console.log(req.body);
     const { name, username, password } = req.body;
 
     
