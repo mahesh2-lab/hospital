@@ -37,6 +37,7 @@ model Patient {
   broughtBy              String?
   statusOfDischarge      String?
   dischargeSummary       String?
+  diseases               String?
   icdCode                String?
   provisionalDiagnosis   String?
   finalDiagnosis         String?
@@ -91,7 +92,7 @@ model Continuation {
 model MedicationTracker {
   id          String   @id @default(cuid())
   patientId   Int // Optional: if you want user-specific trackers
-  name        String?  
+  name        String?
   columnDates Json // Store array of 8 dates as JSON
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

@@ -3,6 +3,7 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 import {
   addPatient,
   getPatients,
+  getPaginatedPatients,
   getPatientById,
   updatePatient,
   deletePatient,
@@ -10,12 +11,22 @@ import {
 
 const router = express.Router();
 
-router
-  .post("/", authMiddleware, addPatient)
-  .get("/", authMiddleware, getPatients);
+// Create a new patient
+router.post("/", authMiddleware, addPatient);
 
-router
-  .get("/:id", authMiddleware, getPatientById)
-  .put("/:id", authMiddleware, updatePatient) 
-  .delete("/:id", authMiddleware, deletePatient); 
+// Get all patients (without pagination)
+router.get("/", authMiddleware, getPatients);
+
+// Get patients with pagination
+router.get("/paginated", authMiddleware, getPaginatedPatients);
+
+// Get patient by ID
+router.get("/:id", authMiddleware, getPatientById);
+
+// Update patient by ID
+router.put("/:id", authMiddleware, updatePatient);
+
+// Delete patient by ID
+router.delete("/:id", authMiddleware, deletePatient);
+
 export default router;

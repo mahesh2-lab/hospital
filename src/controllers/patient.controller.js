@@ -111,6 +111,52 @@ export const getPatients = async (req, res) => {
   }
 };
 
+// Get Patients with pagination
+export const getPaginatedPatients = async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    
+    // Convert to numbers and validate
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.max(1, Math.min(100, parseInt(limit))); // Max limit of 100
+    
+    // Calculate skip value
+    const skip = (pageNum - 1) * limitNum;
+    
+    // Get total count for pagination info
+    const totalCount = await prisma.patient.count();
+    
+    // Get paginated patients
+    const patients = await prisma.patient.findMany({
+      skip,
+      take: limitNum,
+      orderBy: { id: 'desc' } // Order by newest first
+    });
+    
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(totalCount / limitNum);
+    const hasNextPage = pageNum < totalPages;
+    const hasPrevPage = pageNum > 1;
+    
+    res.status(200).json({ 
+      message: "Patients retrieved successfully", 
+      patients,
+      pagination: {
+        currentPage: pageNum,
+        totalPages, 
+        totalCount,
+        limit: limitNum,
+        hasNextPage,
+        hasPrevPage
+      }
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error retrieving patients", error: error.message });
+  }
+};
+
 // Get Patient by ID
 export const getPatientById = async (req, res) => {
   try {
@@ -201,3 +247,5 @@ export const deletePatient = async (req, res) => {
       .json({ message: "Error deleting patient", error: error.message });
   }
 };
+
+
