@@ -146,6 +146,120 @@ model Nursing {
   patientId   Int
 }
 
+model anesthetia {
+  id                    Int    @id @default(autoincrement())
+  patientId             Int
+  date                  String?
+  timeStarted           String?
+  timeEnded             String?
+  patientIdentity       String?
+  checkPAC              String?
+  physicianOpinion      String?
+  consent               String?
+  nbmSince              String?
+  operation             String?
+  sideOfOperation       String?
+  emergencyPlanned      String?
+  ivInj                 String?
+  cannulaNo             String?
+  asaClass              String?
+  anaesthesiaType       String?
+  premedication         String?
+  dose                  String?
+  route                 String?
+  inductionDetails      String?
+  maintenanceDetails    String?
+  reversalDetails       String?
+  lpSpace               String?
+  lpNeedleNo            String?
+  csfFlow               String?
+  drugs                 String?
+  drugDose              String?
+  heightOfAnalgesia     String?
+  bloodTransfusion      String?
+  estimatedLoss         String?
+  gcCnsFunction         String?
+  respiration           String?
+  cough                 String?
+  spo2                  String?
+  cvsPulse              String?
+  bp                    String?
+  urineOutput           String?
+  nbmTill               String?
+  position              String?
+  medicines             String?
+  ivFluids              String?
+  suction               String?
+  o2Therapy             String?
+  regNo                 String?
+  timeCheckup           String?
+  infront               String?
+  anaesthetist1         String?
+  anaesthetist2         String?
+  diagnosis             String?
+  operationCheckup      String?
+  surgeon1              String?
+  surgeon2              String?
+  giddinessHistory      String?
+  uriHistory            String?
+  chestPainHistory      String?
+  tbHistory             String?
+  anaesthesiaHistory    String?
+  bowelHistory          String?
+  drugAllergyHistory    String?
+  menstrualHistory      String?
+  generalCondition      String?
+  temperature           String?
+  pulseRate             String?
+  bpCheckup             String?
+  rrCheckup             String?
+  pallorStatus          String?
+  lymphadenopathy       String?
+  cns                   String?
+  rs                    String?
+  cvs                   String?
+  abdomen               String?
+  neckMovement          String?
+  oralCavity            String?
+  teeth                 String?
+  spine                 String?
+  hb                    String?
+  urine                 String?
+  tlcDlc                String?
+  lft                   String?
+  rft                   String?
+  fastingBS             String?
+  ppBS                  String?
+  xrayChest             String?
+  ecg                   String?
+  bloodGroup            String?
+  monitoringData        String?
+  blisa                 String?
+  otherInvestigations   String?
+  crossMatch            String?
+  dateCheckup           String?
+  giddinessDetails      String?
+  uriDetails            String?
+  chestPainDetails      String?
+  tbDetails             String?
+  anaesthesiaDetails    String?
+  bowelDetails          String?
+  drugAllergyDetails    String?
+}
+
+model consentForm {
+  id                  Int     @id @default(autoincrement())
+  patientId           Int
+  ralativeName        String?
+  ralativeDateTime    String?
+  witnessName         String?
+  witnessDateTime     String?
+  doctorName          String?
+  doctorDateTime      String?
+  interpreterName     String?
+  interpreterDateTime String?
+}
+
 model User {
   id       Int    @id @default(autoincrement())
   name     String

@@ -13,6 +13,8 @@ import continuationRoutes from './routes/continuation.routes.js';
 import ipdRoutes from './routes/ipd.routes.js';
 import nursingRoutes from './routes/nursing.routes.js';
 import drugRoutes from './routes/drugchart.routes.js'; 
+import consentRoutes from './routes/consent.routes.js'
+import anaesthesiaRoutes from './routes/anaesthesia.routes.js';
 import { fileURLToPath } from 'url';
 
 const app = express();
@@ -46,7 +48,8 @@ app.use('/api/v1/continuation', continuationRoutes);
 app.use('/api/v1/ipd', ipdRoutes)
 app.use('/api/v1/nursing', nursingRoutes);
 app.use('/api/v1/drug-charts', drugRoutes); 
-
+app.use('/api/v1/consent/', consentRoutes);
+app.use('/api/v1/anaesthesia/', anaesthesiaRoutes);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
