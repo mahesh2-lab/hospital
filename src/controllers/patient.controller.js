@@ -23,6 +23,7 @@ export const addPatient = async (req, res) => {
       dateTimeDischarge,
       statusOfDischarge,
       icdCode,
+      diseases,
       provisionalDiagnosis,
       finalDiagnosis,
     } = req.body;
@@ -79,6 +80,7 @@ export const addPatient = async (req, res) => {
       consultantName,
       emergencyContact,
       // performByDoctor,
+      diseases, // Assuming this is a placeholder, adjust as needed
       // doctorIncharge,
       // broughtBy,
       // statusOfDischarge,
