@@ -52,7 +52,7 @@ app.use('/api/v1/consent/', consentRoutes);
 app.use('/api/v1/anaesthesia/', anaesthesiaRoutes);
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(__filename);1
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
