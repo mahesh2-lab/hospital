@@ -58,7 +58,7 @@ export const getMedicationTracker = async (req, res) => {
           medications: []
         }
       });
-    }
+    } 
     
     const formattedMedications = tracker.medications.map(med => ({
       id: med.id,
