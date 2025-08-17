@@ -5,3 +5,4 @@ node_modules/
 
 prisma/.env
 prisma/migrations/
+prisma
